@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickerLab 🍑</title>
+    <!-- Google Fonts for that Aesthetic Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Fabric.js Library for Canvas Manipulation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --primary: #8EC5FC;
+            --secondary: #E0C3FC;
+            --accent: #ff80bf;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --text: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Left Sidebar (Controls) */
+        .sidebar {
+            width: 350px;
+            padding: 30px;
+            background: rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: -webkit-linear-gradient(45deg, #ff80bf, #8EC5FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        /* Inputs & Buttons */
+        input[type="text"], input[type="file"] {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(142, 197, 252, 0.2);
+        }
+
+        button {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff80bf, #8EC5FC);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 128, 191, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text);
+            border: 1px solid #eee;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-download {
+            background: #2d3436;
+            color: white;
+            margin-top: auto;
+        }
+
+        /* Emoji Grid */
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .emoji-btn {
+            font-size: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.2);
+            background: #fff0f5;
+        }
+
+        /* Right Side (Canvas) */
+        .workspace {
+            flex: 1;
+            background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .canvas-container {
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border-radius: 4px; /* Canvas needs sharp corners usually, but we hide this */
+        }
+
+        /* Placeholder text when empty */
+        .empty-state {
+            position: absolute;
+            text-align: center;
+            color: #b2bec3;
+            pointer-events: none;
+        Input }
+
+        /* Filefile-upload {
+            styling */
+        . position: relative;
+            overflow display: inline-block: hidden;
+           ;
+        }
+        
+ input[type=        .file-uploadfile] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <div class="sidebar">
+            <h1>StickerLab 🍑</h1>
+            
+            <!-- Upload -->
+            <div class="control-group">
+                <label>1. Upload Image</label>
+                <div class="file-upload btn-primary" style="text-align: center; border-radius: 12px; padding: 12px; color: white;">
+                    📁 Choose Image
+                    <input type="file" id="imgLoader">
+                </div>
+            </div>
+
+            <!-- Add Text -->
+            <div class="control-group">
+                <label>2. Add Text</label>
+                <input type="text" id="textInput" placeholder="e.g. OOF... 😐">
+                <div style="display:flex; gap:5px;">
+                    <input type="color" id="colorPicker" value="#000000" style="height: 45px; width: 50px; padding: 2px; border:none; cursor:pointer;">
+                    <button class="btn-secondary" id="addTextBtn" style="flex:1;">Add Text</button>
+                </div>
+            </div>
+
+            <!-- Stickers -->
+            <div class="control-group">
+                <label>3. Add Stickers</label>
+                <div class="emoji-grid">
+                    <div class="emoji-btn" onclick="addEmoji('😂')">😂</div>
+                    <div class="emoji-btn" onclick="addEmoji('🔥')">🔥</div>
+                    <div class="emoji-btn" onclick="addEmoji('💯')">
