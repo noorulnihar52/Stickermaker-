@@ -234,4 +234,5 @@
                 <div class="emoji-grid">
                     <div class="emoji-btn" onclick="addEmoji('😂')">😂</div>
                     <div class="emoji-btn" onclick="addEmoji('🔥')">🔥</div>
+
                     <div class="emoji-btn" onclick="addEmoji('💯')">
